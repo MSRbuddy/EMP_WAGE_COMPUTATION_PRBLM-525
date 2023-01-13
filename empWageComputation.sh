@@ -13,64 +13,36 @@ fi
 
 #UC-2 -> Calculate Emp Daily Wage
 
-EMPLOYEE_WAGE_PER_HOUR=20;
-WORKING_HOUR=8;
-PRESENT=1;
-PART_TIME=2;
-MAX_WORKING_HOUR=40;
-MAX_WORKING_DAY=20;
+isPresent=$((RANDOM%2));
+perHourSalary=20;
+workingHour=0;
+if [ $isPresent -eq 0 ]
+then
+	echo "Employee is absent";
+	workingHour=0;
+else 
+	echo "Employee is present";
+	workingHour=8;
+fi
+salary=$(($perHourSalary * $workingHour));
+echo "Employee has earned $salary $ today";
 
-totalWorkingHour=0;
-day=0;
+#UC-3 -> Add part-time & Calculate Emp Daily Wage
 
-function calculateWorkingHour() {
-	case $1 in
-		$PRESENT)
-			workingHour=$WORKING_HOUR;
-		;;
-	
-		$PART_TIME)
-			workingHour=$((WORKING_HOUR/2));
-		;;
-
-		*)
-			workingHour=0;
-		;;
-	esac
-	echo $workingHour;
-}
-
-while [[ $day -le $MAX_WORKING_HOUR && $totalWorkingHour -lt $MAX_WORKING_HOUR ]]
-do
-	if [ $totalWorkingHour -eq $((MAX_WORKING_HOUR-WORKING_HOUR/2)) ]
-	then
-		isPresent=$PART_TIME;
-	else
-		isPresent=$((RANDOM%3));
-	fi
-
-	empHr=$(calculateWorkingHour $isPresent);
-	dailyWage[((day++))]=$((empHr * EMPLOYEE_WAGE_PER_HOUR));
-
-	totalWorkingHour=$((totalWorkingHour + empHr));
-done
-
-totalSalary=$(($totalWorkingHour * EMPLOYEE_WAGE_PER_HOUR));
-	
-
-echo "Employee Total Working Hour: " $totalWorkingHour;
-echo "Employee Monthly Wages: " $totalSalary ;
-echo "Employee total working days: " $day;
-
-echo "---------------------------------------------";
-
-echo "DailyWage Array: "${dailyWage[@]};
-echo "DailyWage Array Indexwise: "${!dailyWage[@]};
-
-echo "---------------------------------------------";
-
-for ((i=0;i<${#dailyWage[@]};i++))
-do
-	echo "Day $i earning:  " ${dailyWage[i]} "USD";
-
-done
+isPresent=$((RANDOM%3));
+perHourSalary=20;
+workingHour=0;
+if [ $isPresent -eq 0 ]
+then
+	echo "Employee is absent";
+	workingHour=0;
+elif [ $isPresent -eq 1 ]
+then
+	echo "Employee is present";
+	workingHour=8;
+else
+	echo "Employee is working as part time";
+	workingHour=4;
+fi
+salary=$(($perHourSalary * $workingHour));
+echo "Employee has earned $salary $ today";
